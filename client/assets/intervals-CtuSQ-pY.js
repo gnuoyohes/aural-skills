@@ -1,0 +1,1 @@
+import{w as t}from"./chunk-OIYGIGL5-An1P4jtE.js";function r({}){return[{title:"Aural Skills Intervals"},{name:"description",content:"Intervals practice"}]}const a=t(function(){return null});export{a as default,r as meta};
