@@ -218,7 +218,7 @@ export default function Solfege() {
 
   return (
     <div className="flex h-screen justify-center">
-      <div className="mt-20">
+      <div className="mt-10">
         {
           showStopwatch ?
             <Stopwatch onChange={onStopwatchChange} />
@@ -233,7 +233,7 @@ export default function Solfege() {
               {count}
               {chordSymbol()}
               <form onSubmit={handleSubmit}>
-                <div className="mt-50 flex items-center">
+                <div className="mt-25 flex items-center">
                   <div className={getInputFieldClasses()}>
                     <input
                       ref={solfege1Ref}
