@@ -25,7 +25,7 @@ export default function NavBar() {
                     >
                       Solfege
                     </NavLink>
-                    <NavLink
+                    {/* <NavLink
                       to="/intervals"
                       className={({ isActive, isPending, isTransitioning }) =>
                         [
@@ -36,7 +36,7 @@ export default function NavBar() {
                       }
                     >
                       Intervals
-                    </NavLink>
+                    </NavLink> */}
                 </div>
               </div>
             </div>

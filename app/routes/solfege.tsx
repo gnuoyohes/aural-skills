@@ -1,5 +1,7 @@
 import type { Route } from "./+types/solfege";
 import { useState, useEffect, useRef } from 'react';
+import { timerString, Stopwatch } from '../stopwatch';
+import SubmitForm from '../submitForm';
 
 const CHORDS = new Map([
   ["I", "do mi so"],
@@ -52,7 +54,8 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Solfege() {
   const [started, setStarted] = useState(false);
-  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showStopwatch, setShowStopwatch] = useState(false);
+  const [showSubmitForm, setShowSubmitForm] = useState(false);
   const [count, setCount] = useState(1);
   const [chord, setChord] = useState("");
   const [currentChordIndex, setCurrentChordIndex] = useState(-1);
@@ -61,8 +64,7 @@ export default function Solfege() {
   const [secondary, setSecondary] = useState("");
   const [solfege, setSolfege] = useState<string[]>([]);
   const [error, setError] = useState(false);
-  const [startTime, setStartTime] = useState(null);
-  const [timer, setTimer] = useState(0);
+  const [time, setTime] = useState(null);
 
   const solfege1Ref = useRef(null);
   const solfege2Ref = useRef(null);
@@ -70,38 +72,10 @@ export default function Solfege() {
   const solfege4Ref = useRef(null);
   const inputRefs = [solfege1Ref, solfege2Ref, solfege3Ref, solfege4Ref];
   const submitButtonRef = useRef(null);
-  const timerId = useRef(null);
 
   useEffect(() => {
     selectChord();
   }, [count]);
-
-
-  useEffect(() => {
-    if (started && !timerId.current) {
-      timerId.current = setInterval(() => {
-        const timeMs = new Date() - startTime;
-        setTimer(timeMs);
-      });
-    }
-    else {
-      clearInterval(timerId.current);
-      timerId.current = null;
-    }
-  }, [started]);
-
-  useEffect(() => {
-    return () => {
-      clearInterval(timerId.current);
-    };
-  }, []);
-
-  const timerString = (millis) => {
-    var minutes = Math.floor(millis / 60000);
-    var seconds = Math.floor((millis % 60000) / 1000);
-    var ms = Math.floor((millis % 1000) / 10);
-    return (minutes > 0 ? minutes + ':' : '')+ (seconds < 10 ? '0' : '') + seconds.toFixed(0) + "." + ms;
-  }
 
   const clearInputsAndChords = () => {
     inputRefs.forEach((ref) => {
@@ -114,7 +88,6 @@ export default function Solfege() {
   }
 
   const checkInputs = () => {
-    let valid = true;
     for (let i = 0; i < solfege.length; i++) {
       if (inputRefs[i] && inputRefs[i].current && inputRefs[i].current.value.toLowerCase() != solfege[i]) return false;
     }
@@ -184,8 +157,9 @@ export default function Solfege() {
       if (checkInputs()) {
         setError(false);
         if (count == NUMCHORDS) {
-          setShowLeaderboard(true);
+          setShowSubmitForm(true);
           setStarted(false);
+          setShowStopwatch(false);
         }
         else {
           clearInputsAndChords();
@@ -238,14 +212,20 @@ export default function Solfege() {
 
   const inputFieldTextClasses = "block text-6xl w-25 h-20 min-w-0 grow bg-gray-800 py-1.5 pr-3 pl-1 text-white placeholder:text-gray-500 focus:outline-none";
 
+  const onStopwatchChange = (timeMs: number) => {
+    setTime(timeMs);
+  }
+
   return (
     <div className="flex h-screen justify-center">
       <div className="mt-20">
         {
-          timer ?
-            <div className="m-20 text-4xl text-white">{timerString(timer)}</div>
+          showStopwatch ?
+            <Stopwatch onChange={onStopwatchChange} />
           :
-            null
+            time ?
+              <div className="m-20 text-5xl text-white">{timerString(time)}</div>
+            : null
         }
         {
           started ? 
@@ -326,10 +306,9 @@ export default function Solfege() {
           : 
             <div>
               {
-                showLeaderboard ?
+                showSubmitForm ?
                   <div>
-                    Leaderboard
-
+                    <SubmitForm activity="solfege" score={time} />
                   </div>
                 :
                   null
@@ -339,7 +318,8 @@ export default function Solfege() {
                   setSeenChordIndices([]);
                   setCount(1);
                   setStarted(true);
-                  setStartTime(new Date());
+                  setShowStopwatch(true);
+                  setTime(null);
                 }}
                 type="button" style={{ cursor: 'pointer' }} autoFocus className="mt-20 text-white p-6 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-4xl p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
