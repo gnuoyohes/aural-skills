@@ -176,7 +176,7 @@ export default function Solfege() {
   const chordSymbol = () => {
     const chord_split = chord.split(' ');
     return (
-      <div className="flex justify-center font-serif">
+      <div className="flex justify-center font-serif text-white">
         <p className="text-9xl text-center">
           {chord_split[0]}
         </p>
