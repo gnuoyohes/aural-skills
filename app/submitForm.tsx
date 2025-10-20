@@ -73,40 +73,39 @@ export default function SubmitForm({ activity, score }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="mt-30 flex items-center">
-          <label for="name" className="text-xl">Name</label>
-          <div className="rounded-md ml-8 bg-white/5 pl-3 outline-1 -outline-offset-1 outline-gray-600 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-500">
-            <input
-              autoFocus
-              onChange={(e) => setName(e.target.value)}
-              id="name"
-              name="name"
-              type="text"
-              placeholder=""
-              className="block text-3xl w-60 h-15 min-w-0 grow bg-gray-800 py-1.5 pr-3 pl-1 text-white placeholder:text-gray-500 focus:outline-none"
-            />
-          </div>
-          <div className="ml-8 flex justify-center">
-            <button
-              type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              <svg className="w-10 h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-              </svg>
-              <span className="sr-only">Submit</span>
-            </button>
-          </div>
-          
+      <div className="mt-10 sm:mt-30 flex flex-col sm:flex-row items-center text-white">
+        <label for="name" className="text-xl text-white">Name</label>
+        <div className="mt-5 sm:mt-0 rounded-md ml-8 bg-white/5 pl-3 outline-1 -outline-offset-1 outline-gray-600 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-500">
+          <input
+            autoFocus
+            onChange={(e) => setName(e.target.value)}
+            id="name"
+            name="name"
+            type="text"
+            placeholder=""
+            className="block text-3xl w-70 h-15 min-w-0 grow bg-gray-800 py-1.5 pr-3 pl-1 text-white placeholder:text-gray-500 focus:outline-none"
+          />
+        </div>
+        <div className="ml-8 mt-5 sm:mt-0">
+          <button
+            type="submit"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            <svg className="w-10 h-10" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>
+            <span className="sr-only">Submit</span>
+          </button>
+        </div>
       </div>
-      <p className="text-xl mt-5 text-center">
+      <p className="text-xl mt-5 text-center text-white">
         {
           submitted ? 
             <div>
               <p>Submitted</p>
               {
                 highScore ? 
-                  <p className="mt-20">High Score: {highScore["name"]}, {timerString(highScore["score"])}</p>
+                  <p className="mt-5 sm:mt-10">High Score: {highScore["name"]}, {timerString(highScore["score"])}</p>
                 : null
               }
             </div>

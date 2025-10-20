@@ -25,7 +25,5 @@ export function Stopwatch({ onChange }) {
     };
   }, []);
 
-  return (
-    <div className="m-20 text-5xl text-white">{timerString(timer)}</div>
-  );
+  return timerString(timer);
 }

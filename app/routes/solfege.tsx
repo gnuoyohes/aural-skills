@@ -176,11 +176,11 @@ export default function Solfege() {
   const chordSymbol = () => {
     const chord_split = chord.split(' ');
     return (
-      <div className="flex justify-center font-serif text-white">
-        <p className="text-9xl text-center">
+      <div className="mt-10 sm:mt-30 flex justify-center font-serif text-white">
+        <p className="text-8xl sm:text-9xl text-center">
           {chord_split[0]}
         </p>
-        <p className="flex flex-col ml-3 text-5xl font-semibold text-wrap w-2 h-10">
+        <p className="flex flex-col ml-3 text-4xl sm:text-5xl font-semibold text-wrap w-2 h-10">
           <span>
           {
             inversion.length > 0 ? inversion[0] : null
@@ -194,7 +194,7 @@ export default function Solfege() {
         </p>
         {
           secondary !== "" ? 
-            <p className="ml-6 text-9xl text-center">
+            <p className="ml-6 text-8xl sm:text-9xl text-center">
               /{secondary}
             </p>
           : null
@@ -205,12 +205,12 @@ export default function Solfege() {
   }
 
   const getInputFieldClasses = () => {
-    let classes = "rounded-md ml-8 bg-white/5 pl-3 outline-1 -outline-offset-1 outline-gray-600 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-500";
+    let classes = "rounded-md ml-3 sm:ml-8 bg-white/5 pl-3 outline-1 -outline-offset-1 outline-gray-600 has-[input:focus-within]:outline-2 has-[input:focus-within]:-outline-offset-2 has-[input:focus-within]:outline-indigo-500";
     if (error) classes = classes + " outline-red-500";
     return classes;
   }
 
-  const inputFieldTextClasses = "block text-6xl w-25 h-20 min-w-0 grow bg-gray-800 py-1.5 pr-3 pl-1 text-white placeholder:text-gray-500 focus:outline-none";
+  const inputFieldTextClasses = "block text-3xl sm:text-6xl w-16 sm:w-25 h-15 sm:h-20 min-w-0 grow bg-gray-800 py-1.5 pr-3 pl-1 text-white placeholder:text-gray-500 focus:outline-none";
 
   const onStopwatchChange = (timeMs: number) => {
     setTime(timeMs);
@@ -219,21 +219,21 @@ export default function Solfege() {
   return (
     <div className="flex h-screen justify-center">
       <div className="mt-10">
-        {
-          showStopwatch ?
-            <Stopwatch onChange={onStopwatchChange} />
-          :
-            time ?
-              <div className="m-20 text-5xl text-white">{timerString(time)}</div>
-            : null
-        }
+        <div className="m-20 l-40 sm:ml-10 text-4xl sm:text-5xl text-white">
+          {
+            showStopwatch ?
+              <Stopwatch onChange={onStopwatchChange} />
+            :
+              time ? timerString(time) : null
+          }
+        </div>
         {
           started ? 
             <div>
-              {count}
+              {/* {count} */}
               {chordSymbol()}
               <form onSubmit={handleSubmit}>
-                <div className="mt-25 flex items-center">
+                <div className="mt-20 sm:mt-25 flex items-center">
                   <div className={getInputFieldClasses()}>
                     <input
                       ref={solfege1Ref}
@@ -288,7 +288,7 @@ export default function Solfege() {
                     />
                   </div>
                 </div>
-                <div className="mt-15 flex justify-center">
+                <div className="mt-10 sm:mt-15 flex justify-center">
                   <button
                     type="submit"
                     ref={submitButtonRef}
@@ -313,19 +313,21 @@ export default function Solfege() {
                 :
                   null
               }
-              <button onClick={() => {
-                  clearInputsAndChords();
-                  setSeenChordIndices([]);
-                  setCount(1);
-                  setStarted(true);
-                  setShowStopwatch(true);
-                  setTime(null);
-                }}
-                type="button" style={{ cursor: 'pointer' }} autoFocus className="mt-20 text-white p-6 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-4xl p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                START
-                <span className="sr-only">Submit</span>
-              </button>
+              <div className="flex justify-center">
+                <button onClick={() => {
+                    clearInputsAndChords();
+                    setSeenChordIndices([]);
+                    setCount(1);
+                    setStarted(true);
+                    setShowStopwatch(true);
+                    setTime(null);
+                  }}
+                  type="button" style={{ cursor: 'pointer' }} autoFocus className="mt-5 sm:mt-20 text-white p-6 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-4xl p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  START
+                  <span className="sr-only">Submit</span>
+                </button>
+              </div>
             </div>
         }
       </div>
