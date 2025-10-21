@@ -20,7 +20,7 @@ const CHORDS = new Map([
   ["V7", "so ti re fa"],
   ["vii°7", "ti re fa le"],
   ["ii7", "re fa la do"],
-  ["ii𝆩7", "re fa le do"],
+  ["ii⌀7", "re fa le do"],
   ["iv7", "fa le do me"],
   ["N", "ra fa le"],
   ["V/V", "re fi la"],
