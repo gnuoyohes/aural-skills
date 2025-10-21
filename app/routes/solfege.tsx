@@ -39,6 +39,22 @@ const CHORDS = new Map([
   ["V7/iii", "ti ri fi la"],
   ["V7/III", "te re fa le"],
   ["V7/VII", "fa la do me"],
+  ["vii°/V", "fi la do"],
+  ["vii°/IV", "mi so te"],
+  ["vii°/ii", "di mi so"],
+  ["vii°/vi", "si ti re"],
+  ["vii°/VI", "so te ra"],
+  ["vii°/iii", "ri fi la"],
+  ["vii°/III", "re fa le"],
+  ["vii°/VII", "la do me"],
+  ["vii°7/V", "fi la do me"],
+  ["vii°7/IV", "mi so te ra"],
+  ["vii°7/ii", "di mi so te"],
+  ["vii°7/vi", "si ti re fa"],
+  ["vii°7/VI", "so te ra mi"],
+  ["vii°7/iii", "ri fi la do"],
+  ["vii°7/III", "re fa le ti"],
+  ["vii°7/VII", "la do me se"],
 ]);
 
 const chordsArray = [...CHORDS.entries()];
@@ -97,8 +113,9 @@ export default function Solfege() {
   }
 
   const selectChord = () => {
-    console.log(seenChordIndices);
+    console.log("seenChordIndices: " + seenChordIndices);
     const randomWindow = chordsArray.length - 2 * (NUMCHORDS - 1);
+    console.log("randomWindow: " + randomWindow);
     let randomIndex = Math.floor(Math.random() * randomWindow) + 2 * (count - 1);
     while (seenChordIndices.includes(randomIndex)) {
       randomIndex = Math.floor(Math.random() * randomWindow) + 2 * (count - 1);
@@ -114,16 +131,23 @@ export default function Solfege() {
       setSecondary(chordStr.substring(i + 1, chordStr.length));
       chordStr = chordStr.substring(0, i);
     }
+    else {
+      setSecondary("");
+    }
     let inversions = ["", "6", "64"];
     if (chordStr[chordStr.length - 1] == "7") {
       setChord(chordStr.substring(0, chordStr.length - 1));
       inversions = ["7", "65", "43", "42"];
     }
     else {
-      if (chordStr == "N") {
-        inversions = ["", "6"];
-      }
       setChord(chordStr);
+    }
+
+    if (chordStr == "N" || chordStr == "vii°" || chordStr == "ii°") {
+      inversions = ["", "6"];
+    }
+    if (chordStr == "iv7") {
+      inversions = ["7", "65"];
     }
 
     let randomInvIndex = Math.floor(Math.random() * Math.min(Math.floor(count / 2), inversions.length));
@@ -176,8 +200,8 @@ export default function Solfege() {
   const chordSymbol = () => {
     const chord_split = chord.split(' ');
     return (
-      <div className="mt-10 sm:mt-30 flex justify-center font-serif text-white">
-        <p className="text-8xl sm:text-9xl text-center">
+      <div className="sm:mt-20 flex justify-center font-serif text-white">
+        <p className="text-7xl sm:text-9xl text-center">
           {chord_split[0]}
         </p>
         <p className="flex flex-col ml-3 text-4xl sm:text-5xl font-semibold text-wrap w-2 h-10">
@@ -194,7 +218,7 @@ export default function Solfege() {
         </p>
         {
           secondary !== "" ? 
-            <p className="ml-6 text-8xl sm:text-9xl text-center">
+            <p className="ml-6 text-7xl sm:text-8xl sm:text-9xl text-center">
               /{secondary}
             </p>
           : null
@@ -217,23 +241,26 @@ export default function Solfege() {
   }
 
   return (
-    <div className="flex h-screen justify-center">
+    <div className="flex justify-center h-screen">
       <div className="mt-10">
         <div className="m-20 l-40 sm:ml-10 text-4xl sm:text-5xl text-white">
-          {
-            showStopwatch ?
-              <Stopwatch onChange={onStopwatchChange} />
-            :
-              time ? timerString(time) : null
-          }
+          <div>
+            { showStopwatch ?
+                <Stopwatch onChange={onStopwatchChange} />
+              :
+                time ? timerString(time) : null
+            }
+          </div>
+          <div className="ml-50 sm:ml-120 text-3xl sm:text-4xl">
+            {started ? count : null}
+          </div>
         </div>
         {
           started ? 
             <div>
-              {/* {count} */}
               {chordSymbol()}
               <form onSubmit={handleSubmit}>
-                <div className="mt-20 sm:mt-25 flex items-center">
+                <div className="ml-2 mt-10 sm:mt-25 flex items-center">
                   <div className={getInputFieldClasses()}>
                     <input
                       ref={solfege1Ref}
@@ -315,7 +342,7 @@ export default function Solfege() {
               }
               <div className="flex justify-center">
                 <button onClick={() => {
-                    clearInputsAndChords();
+                    // clearInputsAndChords();
                     setSeenChordIndices([]);
                     setCount(1);
                     setStarted(true);
